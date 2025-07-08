@@ -8,10 +8,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts (Poppins for a softer feel) -->
+    <!-- Google Fonts (Poppins) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Mitr:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -24,7 +24,7 @@
     <style>
         body {
             font-family: 'Poppins', 'Mitr', sans-serif;
-            background-color: #fce4ec;
+            background-color: #fdf2f8; 
         }
         .app-container {
             max-width: 420px;
@@ -36,17 +36,14 @@
             overflow-x: hidden;
         }
         .login-page {
-             background: linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 100%);
+             background-color: #fdf2f8;
         }
-        .login-card {
+        .card {
             background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
-            padding: 2rem;
-            animation: slideUpFadeIn 0.6s ease-out forwards;
-        }
-        .login-title {
-            animation: slideUpFadeIn 0.5s ease-out forwards;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
         }
         .btn-primary {
             background-color: #ff8fab;
@@ -79,6 +76,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
         }
         .btn-secondary:hover {
             background-color: #e5e7eb;
@@ -111,17 +109,6 @@
         .nav-item.tab-inactive {
             color: #a0aec0;
         }
-        .card {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            padding: 1.25rem;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 182, 193, 0.2);
-        }
         .progress-bar {
             height: 10px;
             background-color: #edf2f7;
@@ -135,53 +122,6 @@
             transition: width 0.8s ease-in-out;
             animation: shimmer 2s infinite;
             background-size: 200% 100%;
-        }
-        .water-drop {
-            width: 30px;
-            height: 30px;
-            background-color: #a7d7f9;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            margin: 0 5px;
-            opacity: 0.5;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            cursor: pointer;
-        }
-        .water-drop.filled {
-            background-color: #0ea5e9;
-            opacity: 1;
-            transform: rotate(-45deg) scale(1.1);
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-        .calendar-day {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .calendar-day:hover {
-            background-color: #fecdd3;
-            transform: scale(1.1);
-        }
-        .calendar-day.period {
-            background-color: #ff8fab;
-            color: white;
-        }
-        .calendar-day.predicted {
-            background-color: #fecdd3;
-            color: #ff6b8b;
-        }
-        .calendar-day.today {
-            border: 2px solid #ff8fab;
-            font-weight: bold;
         }
         .tab-content.active {
             display: block;
@@ -219,14 +159,15 @@
 <body class="antialiased">
 
     <div id="app-container">
-        <!-- Auth Screen -->
-        <div id="auth-screen" class="login-page flex-grow flex flex-col justify-center items-center p-4">
-            <div class="text-center mb-8 login-title">
-                <h1 class="text-5xl font-bold text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">🌸 RosieTrack</h1>
-                <p class="text-white/80 mt-2">Blossom into Your Best Self</p>
+        <!-- Auth Screen / Landing Page -->
+        <div id="auth-screen" class="login-page flex-grow flex flex-col p-4">
+            <div class="text-center my-8">
+                <h1 class="text-4xl font-bold text-pink-500">🌸 RosieTrack</h1>
+                <p class="text-gray-500 mt-2">Blossom into Your Best Self</p>
             </div>
-            
-            <div class="login-card w-full max-w-sm">
+
+            <!-- Login/Register Card -->
+            <div id="auth-card" class="card">
                 <div class="flex mb-6">
                     <button id="login-tab" class="auth-tab w-1/2 py-2 text-center font-medium tab-active">เข้าสู่ระบบ</button>
                     <button id="register-tab" class="auth-tab w-1/2 py-2 text-center font-medium tab-inactive">สมัครสมาชิก</button>
@@ -237,21 +178,48 @@
                 <div id="login-form" class="block">
                     <div class="mb-4"><label class="block text-gray-600 mb-2 text-sm">อีเมล</label><input type="email" id="login-email" class="input-field" placeholder="your@email.com"></div>
                     <div class="mb-6"><label class="block text-gray-600 mb-2 text-sm">รหัสผ่าน</label><input type="password" id="login-password" class="input-field" placeholder="••••••••"></div>
-                    <button id="login-btn" class="btn-primary"><span class="btn-text">เข้าสู่ระบบ</span><span class="btn-loader hidden">กำลังโหลด...</span></button>
+                    <button id="login-btn" class="btn-primary"><span class="btn-text">เข้าสู่ระบบ</span></button>
                 </div>
                 
                 <div id="register-form" class="hidden">
                     <div class="mb-4"><label class="block text-gray-600 mb-2 text-sm">ชื่อ</label><input type="text" id="register-name" class="input-field" placeholder="ชื่อของคุณ"></div>
                     <div class="mb-4"><label class="block text-gray-600 mb-2 text-sm">อีเมล</label><input type="email" id="register-email" class="input-field" placeholder="your@email.com"></div>
                     <div class="mb-6"><label class="block text-gray-600 mb-2 text-sm">รหัสผ่าน</label><input type="password" id="register-password" class="input-field" placeholder="อย่างน้อย 6 ตัวอักษร"></div>
-                    <button id="register-btn" class="btn-primary"><span class="btn-text">สมัครสมาชิก</span><span class="btn-loader hidden">กำลังสมัคร...</span></button>
+                    <button id="register-btn" class="btn-primary"><span class="btn-text">สมัครสมาชิก</span></button>
                 </div>
+            </div>
+
+             <!-- Features Card -->
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4">คุณสมบัติเด่น</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start"><div class="bg-pink-100 p-2 rounded-full mr-3"><i data-lucide="bar-chart-3" class="text-pink-500"></i></div><div><h3 class="font-medium">ติดตามน้ำหนัก</h3><p class="text-sm text-gray-500">บันทึกและติดตามน้ำหนักของคุณได้อย่างง่ายดาย พร้อมกราฟแสดงความคืบหน้า</p></div></div>
+                    <div class="flex items-start"><div class="bg-pink-100 p-2 rounded-full mr-3"><i data-lucide="utensils" class="text-pink-500"></i></div><div><h3 class="font-medium">วางแผนอาหาร</h3><p class="text-sm text-gray-500">บันทึกอาหารที่ทานในแต่ละมื้อ คำนวณแคลอรี่ และติดตามการดื่มน้ำ</p></div></div>
+                    <div class="flex items-start"><div class="bg-pink-100 p-2 rounded-full mr-3"><i data-lucide="calendar-days" class="text-pink-500"></i></div><div><h3 class="font-medium">ติดตามรอบเดือน</h3><p class="text-sm text-gray-500">บันทึกและคาดการณ์รอบเดือน พร้อมบันทึกอาการต่างๆ ที่เกิดขึ้น</p></div></div>
+                     <div class="flex items-start"><div class="bg-pink-100 p-2 rounded-full mr-3"><i data-lucide="brain-circuit" class="text-pink-500"></i></div><div><h3 class="font-medium">วิเคราะห์ด้วย AI</h3><p class="text-sm text-gray-500">รับคำแนะนำส่วนตัวด้านสุขภาพและการออกกำลังกายจาก AI ผู้ช่วยของคุณ</p></div></div>
+                </div>
+            </div>
+
+             <!-- Testimonials Card -->
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4">รีวิวจากผู้ใช้</h2>
+                <div class="space-y-4">
+                    <div class="pb-4 border-b border-gray-100"><div class="flex items-center mb-2"><div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 font-bold mr-2">N</div><div><p class="font-medium">นุชนาถ ส.</p><div class="flex text-yellow-400 text-sm"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div></div><p class="text-sm text-gray-600">"แอพนี้ช่วยให้ฉันติดตามรอบเดือนได้แม่นยำมาก และยังช่วยให้ฉันควบคุมน้ำหนักได้ดีขึ้นด้วย ขอบคุณมากๆ!"</p></div>
+                    <div><div class="flex items-center mb-2"><div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 font-bold mr-2">P</div><div><p class="font-medium">พิมพ์มาดา ว.</p><div class="flex text-yellow-400 text-sm"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div></div><p class="text-sm text-gray-600">"ฉันชอบที่สามารถติดตามทั้งน้ำหนัก อาหาร และรอบเดือนได้ในแอพเดียว ใช้งานง่ายมาก แนะนำเลยค่ะ"</p></div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-6 mb-10">
+                <button class="btn-primary px-8 py-3" onclick="document.getElementById('auth-card').scrollIntoView({ behavior: 'smooth' });">เริ่มต้นใช้งานตอนนี้</button>
+                <p class="text-sm text-gray-500 mt-2">ฟรี! ไม่มีค่าใช้จ่าย</p>
             </div>
         </div>
 
-        <!-- Main App Content -->
+        <!-- Main App Content (hidden by default) -->
         <div id="main-app" class="hidden flex-grow flex flex-col">
-            <header class="p-4 flex justify-between items-center"><h1 class="text-2xl font-bold text-gray-800">🌸 RosieTrack</h1><div id="profile-avatar" class="w-10 h-10 bg-pink-200 rounded-full flex items-center justify-center font-bold text-pink-600"></div></header>
+           <!-- Main app content from previous version goes here -->
+           <header class="p-4 flex justify-between items-center"><h1 class="text-2xl font-bold text-gray-800">🌸 RosieTrack</h1><div id="profile-avatar" class="w-10 h-10 bg-pink-200 rounded-full flex items-center justify-center font-bold text-pink-600"></div></header>
 
             <main class="flex-grow p-4 space-y-6 overflow-y-auto">
                 <div id="weight-tracker-tab" class="tab-content">
